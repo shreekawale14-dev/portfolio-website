@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "../java"
+		},
+		{
+			"path": "../OOP_cpp"
+		},
+		{
+			"path": "../HTML"
+		},
+		{
+			"path": "../DSA_JAVA"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "PORTFOLIO WEBSITE"
+	}
+}
