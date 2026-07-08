@@ -48,3 +48,71 @@ const fadeObserver = new IntersectionObserver(
 );
 
 fadeElements.forEach((el) => fadeObserver.observe(el));
+
+// ==========================================================
+// COPY EMAIL TO CLIPBOARD
+// Why: Visitor ko manually email select-copy karne mein
+// friction hoti hai, especially mobile pe. Ek click se copy
+// karna deta hai better user experience — small detail jo
+// professional websites mein hamesha hoti hai.
+// ==========================================================
+
+const copyEmailBtn = document.getElementById("copyEmailBtn");
+const emailValue = document.getElementById("emailValue");
+
+if (copyEmailBtn) {
+  copyEmailBtn.addEventListener("click", () => {
+    // navigator.clipboard is the modern browser API for copying text
+    navigator.clipboard.writeText(emailValue.textContent).then(() => {
+      const originalText = copyEmailBtn.textContent;
+      copyEmailBtn.textContent = "Copied!";
+
+      // 2 second baad button apna original text wapas dikhaye
+      setTimeout(() => {
+        copyEmailBtn.textContent = originalText;
+      }, 2000);
+    });
+  });
+}
+
+// ==========================================================
+// CONTACT FORM SUBMISSION
+// Why: Abhi humare paas backend/server nahi hai jo form data
+// ko kahin save kare ya email bheje. Isliye hum "frontend-only"
+// simulation kar rahe hain — form ko reload hone se rokte hain
+// aur user ko ek confirmation message dikhate hain.
+// Real backend (jaise Formspree, EmailJS, ya apna server)
+// baad mein connect karenge jab tum backend seekhoge.
+// ==========================================================
+
+const contactForm = document.getElementById("contactForm");
+const formStatus = document.getElementById("formStatus");
+
+if (contactForm) {
+  contactForm.addEventListener("submit", (e) => {
+    // preventDefault rokta hai form ko page reload karne se —
+    // by default HTML forms submit hote hi page refresh kar dete hain
+    e.preventDefault();
+
+    formStatus.textContent = "✓ Message sent! I'll get back to you soon.";
+    contactForm.reset(); // saare input fields khaali kar do
+
+    // 4 second baad confirmation message hata do
+    setTimeout(() => {
+      formStatus.textContent = "";
+    }, 4000);
+  });
+}
+
+// ==========================================================
+// FOOTER — Dynamic Year
+// Why: Hardcoded "2026" likhne se agle saal manually update
+// karna padega. Yeh line automatically current year nikal
+// leti hai JavaScript ke Date object se — ek baar likho,
+// hamesha sahi rahega.
+// ==========================================================
+
+const yearSpan = document.getElementById("year");
+if (yearSpan) {
+  yearSpan.textContent = new Date().getFullYear();
+}
