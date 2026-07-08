@@ -20,6 +20,16 @@
   /* Layout */
   --max-width: 1200px;
   --nav-height: 76px;
+
+  /* Premium shadows — layered, soft, and tinted with the accent color
+     instead of plain black, which feels more "glassy" and less flat */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.45);
+  --shadow-glow: 0 8px 30px rgba(59, 109, 244, 0.25);
+
+  /* Shared easing so every hover/transition feels consistent */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ==========================================================
@@ -187,21 +197,23 @@ img {
 
 /* ---- Hero text ---- */
 .hero-eyebrow {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--color-accent);
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   font-family: var(--font-display);
 }
 
 .hero-heading {
   font-family: var(--font-display);
-  font-size: clamp(34px, 4.5vw, 56px);
+  font-size: clamp(34px, 4.5vw, 58px);
   font-weight: 600;
-  line-height: 1.15;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
   color: var(--color-text-primary);
-  margin-bottom: 24px;
+  margin-bottom: 26px;
 }
 
 .hero-heading .highlight {
@@ -213,9 +225,10 @@ img {
 
 .hero-subtitle {
   font-size: 17px;
+  line-height: 1.7;
   color: var(--color-text-secondary);
   max-width: 520px;
-  margin-bottom: 36px;
+  margin-bottom: 40px;
 }
 
 .hero-cta-group {
@@ -229,29 +242,38 @@ img {
   border-radius: 8px;
   font-size: 15px;
   font-weight: 500;
-  transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+  transition: transform 0.35s var(--ease), opacity 0.35s var(--ease),
+    background 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .btn-primary {
   background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
   color: #06121d;
   font-weight: 600;
+  box-shadow: var(--shadow-glow);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  opacity: 0.92;
+  transform: translateY(-3px);
+  opacity: 0.94;
+  box-shadow: 0 12px 36px rgba(34, 211, 238, 0.35);
 }
 
 .btn-secondary {
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
   color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary:hover {
   border-color: var(--color-accent);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
 }
 
 /* ---- Hero image ---- */
@@ -384,24 +406,26 @@ img {
 .section-container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 100px 32px;
+  padding: 120px 32px;
 }
 
 .section-eyebrow {
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--color-accent);
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .section-heading {
   font-family: var(--font-display);
-  font-size: clamp(28px, 3.5vw, 40px);
+  font-size: clamp(28px, 3.5vw, 42px);
   font-weight: 600;
   line-height: 1.2;
-  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+  margin-bottom: 24px;
 }
 
 .section-eyebrow.center,
@@ -420,14 +444,35 @@ img {
    JS adds the ".visible" class when the element enters the viewport. */
 .fade-in {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(28px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
 }
 
 .fade-in.visible {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Stagger effect: when a grid of cards fades in, each card waits a
+   tiny bit longer than the one before it — a subtle premium detail
+   instead of everything popping in at once. Each card already has
+   its own .fade-in class, so we just delay their transitions. */
+.skills-grid .skill-card:nth-child(1),
+.services-grid .service-card:nth-child(1) { transition-delay: 0.05s; }
+.skills-grid .skill-card:nth-child(2),
+.services-grid .service-card:nth-child(2) { transition-delay: 0.1s; }
+.skills-grid .skill-card:nth-child(3),
+.services-grid .service-card:nth-child(3) { transition-delay: 0.15s; }
+.skills-grid .skill-card:nth-child(4),
+.services-grid .service-card:nth-child(4) { transition-delay: 0.2s; }
+.skills-grid .skill-card:nth-child(5) { transition-delay: 0.25s; }
+.skills-grid .skill-card:nth-child(6) { transition-delay: 0.3s; }
+.skills-grid .skill-card:nth-child(7) { transition-delay: 0.35s; }
+.skills-grid .skill-card:nth-child(8) { transition-delay: 0.4s; }
+
+.project-card:nth-child(1) { transition-delay: 0.05s; }
+.project-card:nth-child(2) { transition-delay: 0.15s; }
+.project-card:nth-child(3) { transition-delay: 0.25s; }
 
 /* ==========================================================
    7. ABOUT SECTION
@@ -516,6 +561,7 @@ img {
 }
 
 .skill-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -525,15 +571,41 @@ img {
 
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-sm);
 
-  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease),
+    background 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+/* Gradient border glow — an ::after layer sitting just behind the card,
+   invisible until hover, when it fades in and "outlines" the card in
+   a soft blue-to-cyan gradient. Cheaper and smoother than animating
+   a real border-image. */
+.skill-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 17px;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+  pointer-events: none;
+}
+
+.skill-card:hover::after {
+  opacity: 1;
 }
 
 .skill-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--color-accent);
+  transform: translateY(-8px);
+  border-color: transparent;
   background: rgba(34, 211, 238, 0.06);
+  box-shadow: var(--shadow-lg);
 }
 
 .skill-icon {
@@ -568,13 +640,28 @@ img {
   overflow: hidden;
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
-  backdrop-filter: blur(10px);
-  transition: transform 0.25s ease, border-color 0.25s ease;
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease),
+    box-shadow 0.35s var(--ease);
 }
 
 .project-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-8px);
   border-color: var(--color-accent);
+  box-shadow: var(--shadow-lg);
+}
+
+.project-card:hover .project-image img {
+  transform: scale(1.06);
+}
+
+.project-image {
+  overflow: hidden;
+}
+
+.project-image img {
+  transition: transform 0.5s var(--ease);
 }
 
 .project-image {
@@ -698,15 +785,18 @@ img {
 
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-sm);
 
-  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease),
+    background 0.35s var(--ease), box-shadow 0.35s var(--ease);
 }
 
 .service-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-8px);
   border-color: var(--color-accent);
   background: rgba(34, 211, 238, 0.06);
+  box-shadow: var(--shadow-lg);
 }
 
 .service-icon {
@@ -1014,5 +1104,248 @@ img {
 
   .contact-links {
     justify-content: center;
+  }
+}
+
+/* ==========================================================
+   17. PRELOADER
+   Why: Jab page pehli baar load hoti hai, fonts aur images
+   thoda time lete hain settle hone mein — isse ek second ke
+   liye ugly "flash" dikh sakta hai. Preloader ek clean dark
+   screen dikhata hai tab tak, phir smoothly fade out hoti hai.
+   ========================================================== */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: var(--color-bg);
+
+  transition: opacity 0.6s var(--ease), visibility 0.6s var(--ease);
+}
+
+/* JS adds this class once the page has fully loaded */
+.preloader.loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader-mark {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.preloader-bar {
+  width: 160px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.preloader-bar span {
+  display: block;
+  height: 100%;
+  width: 40%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  animation: preloader-slide 1.1s ease-in-out infinite;
+}
+
+@keyframes preloader-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+/* ==========================================================
+   18. SCROLL PROGRESS BAR
+   Why: Gives the visitor a clear, ambient sense of "how much
+   of the page is left" — a small touch borrowed from
+   Medium/Vercel-style sites that makes long pages feel mapped out.
+   ========================================================== */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%; /* JS updates this as the user scrolls */
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  z-index: 1000;
+  transition: width 0.1s linear;
+}
+
+/* ==========================================================
+   19. ACTIVE NAVBAR LINK
+   JS adds "active" class to whichever nav link matches the
+   section currently in view, so the visitor always knows
+   "where" they are on the page.
+   ========================================================== */
+.nav-links a.active {
+  color: var(--color-text-primary);
+  position: relative;
+}
+
+.nav-links a.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 2px;
+}
+
+/* ==========================================================
+   20. SCROLL TO TOP BUTTON
+   ========================================================== */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+
+  background: rgba(10, 14, 20, 0.7);
+  backdrop-filter: blur(12px);
+  color: var(--color-text-primary);
+  font-size: 18px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease),
+    visibility 0.3s var(--ease), border-color 0.3s var(--ease);
+  z-index: 90;
+}
+
+/* JS adds this once the user scrolls down a bit */
+.scroll-top-btn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-top-btn:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ==========================================================
+   21. PREMIUM FOOTER
+   ========================================================== */
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding-top: 64px;
+}
+
+.footer-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 32px 40px;
+
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 40px;
+}
+
+.footer-brand .logo {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.footer-tagline {
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  max-width: 320px;
+}
+
+.footer-links,
+.footer-socials {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-links a,
+.footer-socials a {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  transition: color 0.25s var(--ease);
+  width: fit-content;
+}
+
+.footer-links a:hover,
+.footer-socials a:hover {
+  color: var(--color-accent);
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--color-border);
+  padding: 22px 32px;
+  text-align: center;
+}
+
+.footer-bottom p {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================
+   22. RESPONSIVE — Sprint 5 additions
+   ========================================================== */
+@media (max-width: 900px) {
+  .footer-container {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .scroll-top-btn {
+    width: 42px;
+    height: 42px;
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-tagline {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-links,
+  .footer-socials {
+    align-items: center;
+  }
+
+  .hero-cta-group .btn {
+    flex: 1 1 auto;
+    text-align: center;
   }
 }

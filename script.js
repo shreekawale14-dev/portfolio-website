@@ -116,3 +116,94 @@ const yearSpan = document.getElementById("year");
 if (yearSpan) {
   yearSpan.textContent = new Date().getFullYear();
 }
+
+// ==========================================================
+// PRELOADER
+// Why: "window load" event fires only after EVERYTHING —
+// images, fonts, everything — has fully loaded. We wait for
+// that, then fade the preloader out. This avoids showing the
+// user a half-loaded, unstyled page for a split second.
+// ==========================================================
+
+const preloader = document.getElementById("preloader");
+
+window.addEventListener("load", () => {
+  preloader.classList.add("loaded");
+});
+
+// ==========================================================
+// SCROLL PROGRESS BAR
+// Why: We calculate "how far down the page" the user has
+// scrolled as a percentage, then set that as the bar's width.
+// This runs on every scroll — it's a cheap calculation
+// (just math, no DOM searching), so it stays smooth.
+// ==========================================================
+
+const scrollProgress = document.getElementById("scrollProgress");
+
+function updateScrollProgress() {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const percent = (scrollTop / docHeight) * 100;
+  scrollProgress.style.width = `${percent}%`;
+}
+
+window.addEventListener("scroll", updateScrollProgress);
+
+// ==========================================================
+// SCROLL TO TOP BUTTON
+// Why: On a long page, scrolling back to the top manually is
+// tedious. The button appears only after the user has scrolled
+// down a bit (showing it immediately at the very top would be
+// pointless — there's nowhere "up" to go yet).
+// ==========================================================
+
+const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 500) {
+    scrollTopBtn.classList.add("show");
+  } else {
+    scrollTopBtn.classList.remove("show");
+  }
+});
+
+scrollTopBtn.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+// ==========================================================
+// ACTIVE NAVBAR LINK ON SCROLL ("Scroll Spy")
+// Why: As the user scrolls through sections, the matching
+// navbar link highlights — so they always have a sense of
+// "where am I on this page" without reading section headings.
+//
+// How it works: IntersectionObserver watches every <section>.
+// Whenever a section crosses the middle of the viewport, we
+// find the nav link with a matching href (#section-id) and
+// mark it "active", removing "active" from the others.
+// ==========================================================
+
+const sections = document.querySelectorAll("section[id]");
+const allNavLinks = document.querySelectorAll(".nav-links a");
+
+const spyObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute("id");
+
+        allNavLinks.forEach((link) => {
+          link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+        });
+      }
+    });
+  },
+  {
+    // Triggers when a section occupies the vertical middle of the screen —
+    // feels more natural than triggering the instant a section barely appears
+    rootMargin: "-45% 0px -45% 0px",
+  }
+);
+
+sections.forEach((section) => spyObserver.observe(section));
