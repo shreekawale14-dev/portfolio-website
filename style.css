@@ -1349,3 +1349,20 @@ img {
     text-align: center;
   }
 }
+
+/* ==========================================================
+   23. "COMING SOON" PROJECT BADGE
+   Why: A couple of projects are still in progress, so instead
+   of a fake GitHub/Live Demo link that leads nowhere, we show
+   an honest, non-clickable badge using the same button styling
+   for visual consistency.
+   ========================================================== */
+.project-link.coming-soon {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.project-link.coming-soon:hover {
+  border-color: var(--color-border);
+  transform: none;
+}
