@@ -5,14 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shreevatsa Kawale | Frontend Developer & Freelancer</title>
 
+  <!-- SEO: description + theme color help search engines and mobile browser
+       chrome understand and represent this page correctly -->
+  <meta name="description" content="Shreevatsa Kawale — B.Tech Computer Engineering student and frontend developer in Pune, India. Portfolio, skills, projects, and freelance services." />
+  <meta name="theme-color" content="#0a0e14" />
+
+  <!-- Open Graph tags: control how this page looks when shared on
+       WhatsApp, LinkedIn, Twitter, etc. Without these, shared links
+       show a blank/ugly preview. -->
+  <meta property="og:title" content="Shreevatsa Kawale | Frontend Developer & Freelancer" />
+  <meta property="og:description" content="B.Tech Computer Engineering student building clean, modern web experiences and taking on freelance frontend projects." />
+  <meta property="og:type" content="website" />
+
+  <!-- Simple inline SVG favicon — avoids a 404 request for a missing favicon.ico file -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%2322d3ee%22>D</text></svg>" />
+
   <!-- Google Fonts: Space Grotesk for headings, Inter for body text -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Structured data (JSON-LD): tells Google "this page is about a
+       specific Person," which can help it show richer search results
+       (like a knowledge panel) instead of treating this as generic text. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Shreevatsa Kawale",
+    "jobTitle": "Frontend Developer",
+    "url": "https://github.com/shreekawale14-dev",
+    "sameAs": ["https://github.com/shreekawale14-dev"],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Pune",
+      "addressRegion": "Maharashtra",
+      "addressCountry": "IN"
+    }
+  }
+  </script>
 </head>
 <body>
+
+  <!-- Skip link: invisible until a keyboard user tabs to it. Lets someone
+       navigating with a keyboard/screen reader jump straight to the main
+       content instead of tabbing through the entire navbar every time. -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
 
   <!-- ============ PRELOADER ============ -->
   <!-- Shown for a brief moment while fonts/images settle, then fades out.
@@ -44,7 +85,7 @@
       <a href="#contact" class="nav-cta">Hire Me</a>
 
       <!-- Hamburger button, shown only on mobile -->
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu">
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navLinks">
         <span></span>
         <span></span>
         <span></span>
@@ -53,6 +94,7 @@
   </header>
 
   <!-- ============ HERO SECTION ============ -->
+  <main id="main-content">
   <section class="hero" id="home">
     <!-- Decorative background grid, purely visual -->
     <div class="hero-grid" aria-hidden="true"></div>
@@ -60,7 +102,7 @@
     <div class="hero-container">
 
       <div class="hero-text">
-        <p class="hero-eyebrow">Frontend Developer & Freelancer</p>
+        <p class="hero-eyebrow section-eyebrow">Frontend Developer & Freelancer</p>
 
         <h1 class="hero-heading">
           Hi, I'm Shreevatsa —<br />
@@ -82,8 +124,9 @@
       <div class="hero-image-wrap">
         <div class="hero-glow" aria-hidden="true"></div>
         <div class="hero-image">
-          <!-- Placeholder profile image; replace src later with real photo -->
-          <img src="images/profile-placeholder.jpg" alt="Profile photo" />
+          <!-- Placeholder profile image; replace src later with real photo.
+               Above-the-fold image, so it loads eagerly (no lazy-loading). -->
+          <img src="images/profile-placeholder.png" alt="Profile photo" width="280" height="280" />
         </div>
       </div>
 
@@ -97,7 +140,7 @@
       <div class="about-image-wrap">
         <div class="about-glow" aria-hidden="true"></div>
         <div class="about-image">
-          <img src="images/about-placeholder.jpg" alt="Photo of me working" />
+          <img src="images/about-placeholder.png" alt="Photo of me working" width="320" height="380" loading="lazy" decoding="async" />
         </div>
       </div>
 
@@ -116,20 +159,20 @@
           working toward my first freelance clients as a frontend developer.
         </p>
 
-        <div class="about-grid">
+        <dl class="about-grid">
           <div class="about-item">
-            <span class="about-label">Education</span>
-            <span class="about-value">B.Tech Computer Engineering — SPPU</span>
+            <dt class="about-label">Education</dt>
+            <dd class="about-value">B.Tech Computer Engineering — SPPU</dd>
           </div>
           <div class="about-item">
-            <span class="about-label">Career Goal</span>
-            <span class="about-value">Frontend Developer · Freelancer · Future Full Stack Developer</span>
+            <dt class="about-label">Career Goal</dt>
+            <dd class="about-value">Frontend Developer · Freelancer · Future Full Stack Developer</dd>
           </div>
           <div class="about-item">
-            <span class="about-label">Currently Learning</span>
-            <span class="about-value">Java DSA · Frontend Development · React · AI Tools</span>
+            <dt class="about-label">Currently Learning</dt>
+            <dd class="about-value">Java DSA · Frontend Development · React · AI Tools</dd>
           </div>
-        </div>
+        </dl>
       </div>
 
     </div>
@@ -166,7 +209,7 @@
         </div>
         <div class="skill-card fade-in">
           <span class="skill-icon">⚛️</span>
-          <span class="skill-name">React <em>(Learning)</em></span>
+          <span class="skill-name">React <span class="skill-note">(Learning)</span></span>
         </div>
         <div class="skill-card fade-in">
           <span class="skill-icon">🤖</span>
@@ -192,7 +235,7 @@
 
         <article class="project-card fade-in">
           <div class="project-image">
-            <img src="images/project-placeholder-1.jpg" alt="Personal Portfolio Website screenshot" />
+            <img src="images/project-placeholder-1.png" alt="Personal Portfolio Website screenshot" width="400" height="250" loading="lazy" decoding="async" />
           </div>
           <div class="project-body">
             <h3 class="project-title">Personal Portfolio Website</h3>
@@ -205,15 +248,15 @@
               <span>HTML</span><span>CSS</span><span>JavaScript</span>
             </div>
             <div class="project-links">
-              <a href="https://github.com/shreekawale14-dev" class="project-link" target="_blank" rel="noopener noreferrer">GitHub</a>
-              <a href="#" class="project-link primary">Live Demo</a>
+              <a href="https://github.com/shreekawale14-dev/portfolio-website" class="project-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="#home" class="project-link primary">Live Demo</a>
             </div>
           </div>
         </article>
 
         <article class="project-card fade-in">
           <div class="project-image">
-            <img src="images/project-placeholder-2.jpg" alt="Expense Tracker project screenshot" />
+            <img src="images/project-placeholder-2.png" alt="Expense Tracker project screenshot" width="400" height="250" loading="lazy" decoding="async" />
           </div>
           <div class="project-body">
             <h3 class="project-title">Expense Tracker</h3>
@@ -233,7 +276,7 @@
 
         <article class="project-card fade-in">
           <div class="project-image">
-            <img src="images/project-placeholder-3.jpg" alt="Weather App project screenshot" />
+            <img src="images/project-placeholder-3.png" alt="Weather App project screenshot" width="400" height="250" loading="lazy" decoding="async" />
           </div>
           <div class="project-body">
             <h3 class="project-title">Weather App</h3>
@@ -252,7 +295,7 @@
 
         <article class="project-card fade-in">
           <div class="project-image">
-            <img src="images/project-placeholder-4.jpg" alt="DSA Practice Repository screenshot" />
+            <img src="images/project-placeholder-4.png" alt="DSA Practice Repository screenshot" width="400" height="250" loading="lazy" decoding="async" />
           </div>
           <div class="project-body">
             <h3 class="project-title">DSA Practice Repository</h3>
@@ -264,7 +307,7 @@
               <span>Java</span><span>DSA</span><span>Git</span>
             </div>
             <div class="project-links">
-              <a href="https://github.com/shreekawale14-dev" class="project-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://github.com/shreekawale14-dev/java-dsa" class="project-link" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
           </div>
         </article>
@@ -350,7 +393,7 @@
       <div class="timeline">
 
         <div class="timeline-item fade-in">
-          <div class="timeline-dot"></div>
+          <div class="timeline-dot" aria-hidden="true"></div>
           <div class="timeline-content">
             <span class="timeline-date">Year 1</span>
             <h3 class="timeline-title">Started B.Tech Computer Engineering</h3>
@@ -362,7 +405,7 @@
         </div>
 
         <div class="timeline-item fade-in">
-          <div class="timeline-dot"></div>
+          <div class="timeline-dot" aria-hidden="true"></div>
           <div class="timeline-content">
             <span class="timeline-date">Ongoing</span>
             <h3 class="timeline-title">Learning Java & DSA</h3>
@@ -374,7 +417,7 @@
         </div>
 
         <div class="timeline-item fade-in">
-          <div class="timeline-dot"></div>
+          <div class="timeline-dot" aria-hidden="true"></div>
           <div class="timeline-content">
             <span class="timeline-date">Ongoing</span>
             <h3 class="timeline-title">Learning Frontend Web Development</h3>
@@ -386,7 +429,7 @@
         </div>
 
         <div class="timeline-item fade-in">
-          <div class="timeline-dot"></div>
+          <div class="timeline-dot" aria-hidden="true"></div>
           <div class="timeline-content">
             <span class="timeline-date">Current</span>
             <h3 class="timeline-title">Exploring AI-Assisted Development</h3>
@@ -417,41 +460,41 @@
           I'll get back to you as soon as possible.
         </p>
 
-        <ul class="contact-details">
-          <li class="contact-detail-item">
-            <span class="contact-label">Name</span>
-            <span class="contact-value">Shreevatsa Kawale</span>
-          </li>
+        <dl class="contact-details">
+          <div class="contact-detail-item">
+            <dt class="contact-label">Name</dt>
+            <dd class="contact-value">Shreevatsa Kawale</dd>
+          </div>
 
-          <li class="contact-detail-item">
-            <span class="contact-label">Email</span>
-            <span class="contact-value-row">
+          <div class="contact-detail-item">
+            <dt class="contact-label">Email</dt>
+            <dd class="contact-value-row">
               <span class="contact-value" id="emailValue">shreekawale14@gmail.com</span>
               <!-- Copy button: lets a visitor copy the email in one click
                    instead of manually selecting the text -->
               <button class="copy-btn" id="copyEmailBtn" aria-label="Copy email address">
                 Copy
               </button>
-            </span>
-          </li>
+            </dd>
+          </div>
 
-          <li class="contact-detail-item">
-            <span class="contact-label">Phone</span>
-            <span class="contact-value">+91 9890679864</span>
-          </li>
+          <div class="contact-detail-item">
+            <dt class="contact-label">Phone</dt>
+            <dd class="contact-value">+91 9890679864</dd>
+          </div>
 
-          <li class="contact-detail-item">
-            <span class="contact-label">Location</span>
-            <span class="contact-value">Pune, Maharashtra, India</span>
-          </li>
-        </ul>
+          <div class="contact-detail-item">
+            <dt class="contact-label">Location</dt>
+            <dd class="contact-value">Pune, Maharashtra, India</dd>
+          </div>
+        </dl>
 
         <div class="contact-links">
           <a href="https://github.com/shreekawale14-dev" class="contact-link-btn" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="#" class="contact-link-btn" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="#" class="contact-link-btn" target="_blank" rel="noopener noreferrer">Fiverr</a>
-          <a href="#" class="contact-link-btn" target="_blank" rel="noopener noreferrer">Upwork</a>
-          <a href="#" class="contact-link-btn primary" download>Download Resume</a>
+          <a href="https://www.linkedin.com/in/shreevatsa-kawale-a27a14420" class="contact-link-btn" target="_blank" rel="noopener noreferrer">LinkedIn </a>
+          <a href="#" class="contact-link-btn" aria-disabled="true" title="Coming soon">Fiverr</a>
+          <a href="#" class="contact-link-btn" aria-disabled="true" title="Coming soon">Upwork</a>
+          <a href="#" class="contact-link-btn primary" aria-disabled="true" title="Coming soon">Download Resume</a>
         </div>
       </div>
 
@@ -484,6 +527,7 @@
 
     </div>
   </section>
+  </main>
 
   <!-- ============ FOOTER ============ -->
   <footer class="site-footer">
@@ -505,8 +549,8 @@
 
       <div class="footer-socials">
         <a href="https://github.com/shreekawale14-dev" target="_blank" rel="noopener noreferrer" aria-label="GitHub">GitHub</a>
-        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">LinkedIn</a>
-        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Upwork">Upwork</a>
+        <a href="https://www.linkedin.com/in/shreevatsa-kawale-a27a14420" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="#" aria-disabled="true" title="Coming soon" aria-label="Upwork (coming soon)">Upwork</a>
       </div>
 
     </div>
@@ -522,6 +566,6 @@
     ↑
   </button>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>

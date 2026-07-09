@@ -9,7 +9,10 @@ const navToggle = document.getElementById("navToggle");
 const navLinks = document.getElementById("navLinks");
 
 navToggle.addEventListener("click", () => {
-  navLinks.classList.toggle("open");
+  const isOpen = navLinks.classList.toggle("open");
+  // Keep the accessible state in sync with the visual state — screen
+  // readers announce "expanded"/"collapsed" based on this attribute
+  navToggle.setAttribute("aria-expanded", isOpen);
 });
 
 // Jab user kisi nav link pe click kare, menu automatically band ho jaye
@@ -17,6 +20,7 @@ navToggle.addEventListener("click", () => {
 navLinks.querySelectorAll("a").forEach((link) => {
   link.addEventListener("click", () => {
     navLinks.classList.remove("open");
+    navToggle.setAttribute("aria-expanded", "false");
   });
 });
 
@@ -62,16 +66,31 @@ const emailValue = document.getElementById("emailValue");
 
 if (copyEmailBtn) {
   copyEmailBtn.addEventListener("click", () => {
-    // navigator.clipboard is the modern browser API for copying text
-    navigator.clipboard.writeText(emailValue.textContent).then(() => {
-      const originalText = copyEmailBtn.textContent;
-      copyEmailBtn.textContent = "Copied!";
+    // Guard: navigator.clipboard doesn't exist in a few older browsers.
+    // Without this check, clicking the button on those browsers would
+    // throw a silent error and do nothing — confusing for the visitor.
+    if (!navigator.clipboard) {
+      copyEmailBtn.textContent = "Copy failed";
+      setTimeout(() => (copyEmailBtn.textContent = "Copy"), 2000);
+      return;
+    }
 
-      // 2 second baad button apna original text wapas dikhaye
-      setTimeout(() => {
-        copyEmailBtn.textContent = originalText;
-      }, 2000);
-    });
+    // navigator.clipboard is the modern browser API for copying text
+    navigator.clipboard
+      .writeText(emailValue.textContent)
+      .then(() => {
+        const originalText = copyEmailBtn.textContent;
+        copyEmailBtn.textContent = "Copied!";
+
+        // 2 second baad button apna original text wapas dikhaye
+        setTimeout(() => {
+          copyEmailBtn.textContent = originalText;
+        }, 2000);
+      })
+      .catch(() => {
+        copyEmailBtn.textContent = "Copy failed";
+        setTimeout(() => (copyEmailBtn.textContent = "Copy"), 2000);
+      });
   });
 }
 
@@ -132,41 +151,49 @@ window.addEventListener("load", () => {
 });
 
 // ==========================================================
-// SCROLL PROGRESS BAR
-// Why: We calculate "how far down the page" the user has
-// scrolled as a percentage, then set that as the bar's width.
-// This runs on every scroll — it's a cheap calculation
-// (just math, no DOM searching), so it stays smooth.
+// SCROLL PROGRESS BAR + SCROLL TO TOP BUTTON
+// Why combined into one listener: Two separate "scroll" event
+// listeners each run on every single scroll frame — that's wasted
+// work. Combining them into one listener means the browser only
+// has to fire one callback per scroll event instead of two.
+//
+// Why requestAnimationFrame: Scroll events can fire dozens of
+// times per second. Wrapping our updates in rAF makes sure we
+// only update the DOM once per actual browser repaint, instead
+// of potentially several times between repaints — this is the
+// standard technique for keeping scroll-linked effects smooth
+// and avoiding "jank" on lower-end phones.
 // ==========================================================
 
 const scrollProgress = document.getElementById("scrollProgress");
+const scrollTopBtn = document.getElementById("scrollTopBtn");
+const navbar = document.getElementById("navbar");
 
-function updateScrollProgress() {
+let scrollTicking = false;
+
+function handleScrollEffects() {
   const scrollTop = window.scrollY;
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
   const percent = (scrollTop / docHeight) * 100;
   scrollProgress.style.width = `${percent}%`;
+
+  scrollTopBtn.classList.toggle("show", scrollTop > 500);
+  navbar.classList.toggle("scrolled", scrollTop > 20);
+
+  scrollTicking = false;
 }
 
-window.addEventListener("scroll", updateScrollProgress);
-
-// ==========================================================
-// SCROLL TO TOP BUTTON
-// Why: On a long page, scrolling back to the top manually is
-// tedious. The button appears only after the user has scrolled
-// down a bit (showing it immediately at the very top would be
-// pointless — there's nowhere "up" to go yet).
-// ==========================================================
-
-const scrollTopBtn = document.getElementById("scrollTopBtn");
-
-window.addEventListener("scroll", () => {
-  if (window.scrollY > 500) {
-    scrollTopBtn.classList.add("show");
-  } else {
-    scrollTopBtn.classList.remove("show");
-  }
-});
+window.addEventListener(
+  "scroll",
+  () => {
+    if (!scrollTicking) {
+      requestAnimationFrame(handleScrollEffects);
+      scrollTicking = true;
+    }
+  },
+  { passive: true } // tells the browser we won't call preventDefault(),
+  // letting it scroll immediately without waiting on our JS
+);
 
 scrollTopBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -207,3 +234,18 @@ const spyObserver = new IntersectionObserver(
 );
 
 sections.forEach((section) => spyObserver.observe(section));
+
+// ==========================================================
+// DISABLED PLACEHOLDER LINKS
+// Why: LinkedIn, Fiverr, Upwork, and Resume don't have real
+// destinations yet (marked aria-disabled="true" in the HTML).
+// Without this, clicking them would still jump the page to the
+// top because their href is "#" — a confusing, broken-feeling
+// bug. This stops that click from doing anything.
+// ==========================================================
+
+document.querySelectorAll('a[aria-disabled="true"]').forEach((link) => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+  });
+});

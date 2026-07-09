@@ -51,6 +51,9 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text-primary);
   font-family: var(--font-body);
+  font-size: 16px; /* explicit base size — don't rely on the browser's
+                       default, which can technically be changed by the
+                       user's own browser settings */
   line-height: 1.6;
   overflow-x: hidden;
 }
@@ -85,7 +88,18 @@ img {
   background: rgba(10, 14, 20, 0.6);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid transparent;
+  transition: background 0.3s var(--ease), border-color 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
+}
+
+/* JS adds this once the page has scrolled a little — a subtle "lift"
+   that separates the navbar from content, the same pattern Stripe and
+   Vercel use instead of a permanently visible border */
+.navbar.scrolled {
+  background: rgba(10, 14, 20, 0.85);
+  border-bottom-color: var(--color-border);
+  box-shadow: var(--shadow-sm);
 }
 
 .nav-container {
@@ -196,14 +210,11 @@ img {
 }
 
 /* ---- Hero text ---- */
+/* hero-eyebrow reuses .section-eyebrow's styles (added as a second class
+   in the HTML) — this used to be a near-identical duplicate rule block.
+   Only the spacing differs, so that's all that's kept here. */
 .hero-eyebrow {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-accent);
   margin-bottom: 20px;
-  font-family: var(--font-display);
 }
 
 .hero-heading {
@@ -305,6 +316,7 @@ img {
   border: 1px solid var(--color-border);
   background: var(--color-bg-elevated);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .hero-image img {
@@ -343,9 +355,18 @@ img {
 
 /* Mobile */
 @media (max-width: 640px) {
-  .nav-links,
+  /* UX fix: the "Hire Me" CTA used to vanish completely on mobile,
+     leaving no visible call-to-action except a hamburger icon —
+     the single most important button on a freelance portfolio
+     should never disappear. We shrink it instead of hiding it. */
+  .nav-container {
+    padding: 0 20px;
+    gap: 12px;
+  }
+
   .nav-cta {
-    display: none;
+    padding: 8px 14px;
+    font-size: 13px;
   }
 
   .nav-toggle {
@@ -364,6 +385,7 @@ img {
 
     background: rgba(10, 14, 20, 0.85);
     backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--color-border);
 
     max-height: 0;
@@ -572,6 +594,7 @@ img {
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
   backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   box-shadow: var(--shadow-sm);
 
   transition: transform 0.35s var(--ease), border-color 0.35s var(--ease),
@@ -619,7 +642,7 @@ img {
   text-align: center;
 }
 
-.skill-name em {
+.skill-note {
   color: var(--color-text-secondary);
   font-style: normal;
   font-size: 12px;
@@ -641,9 +664,19 @@ img {
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
   backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   box-shadow: var(--shadow-sm);
   transition: transform 0.35s var(--ease), border-color 0.35s var(--ease),
     box-shadow 0.35s var(--ease);
+
+  /* Alignment fix: cards were plain blocks, so if one project's
+     description ran a line longer than its neighbour, the GitHub/Live
+     Demo buttons ended up at different heights across the row —
+     it looked misaligned and unpolished. Flex column + margin-top:auto
+     on project-links (below) pins the buttons to the bottom of every
+     card, no matter how much text is above them. */
+  display: flex;
+  flex-direction: column;
 }
 
 .project-card:hover {
@@ -656,17 +689,13 @@ img {
   transform: scale(1.06);
 }
 
-.project-image {
-  overflow: hidden;
-}
-
-.project-image img {
-  transition: transform 0.5s var(--ease);
-}
-
+/* Merged: this was previously split into two separate rule blocks
+   (a leftover from an earlier sprint) — combined here so all
+   .project-image styling lives in one place. */
 .project-image {
   width: 100%;
   aspect-ratio: 16 / 10;
+  overflow: hidden;
   background: rgba(255, 255, 255, 0.03);
 }
 
@@ -674,10 +703,14 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s var(--ease);
 }
 
 .project-body {
   padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* fills remaining card height so project-links can anchor to the bottom */
 }
 
 .project-title {
@@ -713,6 +746,7 @@ img {
 .project-links {
   display: flex;
   gap: 12px;
+  margin-top: auto; /* pushes buttons to the bottom of the card */
 }
 
 .project-link {
@@ -786,6 +820,7 @@ img {
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
   backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   box-shadow: var(--shadow-sm);
 
   transition: transform 0.35s var(--ease), border-color 0.35s var(--ease),
@@ -871,6 +906,7 @@ img {
   border-radius: 14px;
   padding: 20px 24px;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .timeline-date {
@@ -1018,6 +1054,7 @@ img {
   border-radius: 20px;
   padding: 40px;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 
   display: flex;
   flex-direction: column;
@@ -1217,6 +1254,7 @@ img {
 
   background: rgba(10, 14, 20, 0.7);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: var(--color-text-primary);
   font-size: 18px;
   cursor: pointer;
@@ -1365,4 +1403,74 @@ img {
 .project-link.coming-soon:hover {
   border-color: var(--color-border);
   transform: none;
+}
+
+/* ==========================================================
+   24. CODE REVIEW FIXES — Accessibility & Polish
+   ========================================================== */
+
+/* Skip link — invisible by default, only appears when a keyboard
+   user tabs onto it. Standard accessibility pattern so screen-reader
+   and keyboard users don't have to tab through the whole navbar
+   on every single page visit. */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 16px;
+  z-index: 2000;
+
+  background: var(--color-accent);
+  color: #06121d;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: 8px;
+
+  transition: top 0.25s var(--ease);
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+/* Placeholder links (LinkedIn, Fiverr, Upwork, Resume) use
+   aria-disabled="true" instead of a dead href="#" jump. This
+   styles them as clearly "not clickable yet" so visitors aren't
+   confused, and JS (below) blocks the click itself. */
+a[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+a[aria-disabled="true"]:hover {
+  transform: none;
+  border-color: var(--color-border);
+}
+
+/* Consistent, visible focus outline for keyboard navigation across
+   every interactive element — buttons, links, inputs. Browsers'
+   default focus ring often gets accidentally removed by custom
+   button/link styling; this restores it deliberately. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Respect users who've asked their OS/browser to reduce motion
+   (a real accessibility setting, often used by people with
+   vestibular disorders). We shorten every animation/transition
+   to nearly instant instead of disabling them outright, which
+   keeps the UI state changes intact without the motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
